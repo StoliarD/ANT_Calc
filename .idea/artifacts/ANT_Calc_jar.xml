@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="ANT_Calc:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/ANT_Calc_jar</output-path>
+    <root id="archive" name="ANT_Calc.jar">
+      <element id="module-output" name="ANT_Calc" />
+    </root>
+  </artifact>
+</component>
