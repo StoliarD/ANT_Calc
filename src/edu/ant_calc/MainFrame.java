@@ -186,10 +186,12 @@ public class MainFrame extends JFrame {
     private ActionListener pluginButtonListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            JButton button = (JButton) e.getSource();
-            equalsButtonMethod();
-            if (solver.setOperation(button.getText(), Double.parseDouble(res.getText()))) {
+            if (!res.getText().equals("Error")) {
+                JButton button = (JButton) e.getSource();
                 equalsButtonMethod();
+                if (solver.setOperation(button.getText(), Double.parseDouble(res.getText()))) {
+                    equalsButtonMethod();
+                }
             }
         }
     };
