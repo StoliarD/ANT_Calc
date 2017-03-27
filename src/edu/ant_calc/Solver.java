@@ -60,10 +60,14 @@ public class Solver {
         } else return Double.NaN;
     }
 
-    private static Operation getClassInstance(String className) throws IOException, ClassNotFoundException, IllegalAccessException,InstantiationException{
+    String getPluginsFolder() {
         String dir = new File(".").getAbsolutePath();
+        return dir.substring(0,dir.length()-1) + "/plugins/";
+    }
+
+    private Operation getClassInstance(String className) throws IOException, ClassNotFoundException, IllegalAccessException,InstantiationException{
 //        File myJar = new File("D:\\Java Projects\\JAR\\" + className + ".jar");
-        File myJar = new File(dir.substring(0,dir.length()-1) + className + ".jar");
+        File myJar = new File(getPluginsFolder() + className + ".jar");
         URLClassLoader urlClassLoader = new URLClassLoader (new URL[]{myJar.toURI().toURL()});
         Class classToLoad = Class.forName ("edu.ant_calc.oper." + className, true, urlClassLoader);
         return (Operation) classToLoad.newInstance();

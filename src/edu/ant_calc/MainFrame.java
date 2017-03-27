@@ -4,8 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Locale;
 
@@ -14,8 +16,8 @@ import java.util.Locale;
  */
 public class MainFrame extends JFrame {
     private JPanel pluginsPanel;
-    private JCheckBox[] checkBoxArray = {new JCheckBox("Plus"),
-        new JCheckBox("Minus"), new JCheckBox("Multiply"), new JCheckBox("Divide"),new JCheckBox("Sqrt")};
+//    private JCheckBox[] checkBoxArray = {new JCheckBox("Plus"),
+//        new JCheckBox("Minus"), new JCheckBox("Multiply"), new JCheckBox("Divide"),new JCheckBox("Sqrt")};
     private DecimalFormat decimalFormat;
 
     private JButton pluginsButton;
@@ -73,6 +75,7 @@ public class MainFrame extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         clear();
+//        System.out.println(SwingUtilities.isEventDispatchThread());
     }
 
     private void prepareNumericPanel() {
@@ -119,15 +122,32 @@ public class MainFrame extends JFrame {
         keepInput = false;
     }
 
+    private JCheckBox[] preparePluginList() {
+        File folder = new File(solver.getPluginsFolder());
+        ArrayList<String> pluginNames = new ArrayList<>();
+        for (File plugin : folder.listFiles()) {
+            String s = plugin.getName();
+            if (s.substring(s.length()-4).equals(".jar")) {
+                pluginNames.add(s.substring(0,s.length()-4));
+            }
+        }
+        JCheckBox[] checkBoxes = new JCheckBox[pluginNames.size()];
+        for (int i = 0; i < pluginNames.size(); i++) {
+            checkBoxes[i] = new JCheckBox(pluginNames.get(i));
+        }
+        return checkBoxes;
+    }
+
     private ActionListener defaultListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             JButton button = (JButton) e.getSource();
+            JCheckBox[] checkboxes = preparePluginList();
             if (button == pluginsButton) {
-                JOptionPane.showMessageDialog(null, checkBoxArray, "choose plugins", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, checkboxes, "choose plugins", JOptionPane.INFORMATION_MESSAGE);
                 pluginsPanel.removeAll();
                 HashSet<String> pluginNames = new HashSet<>();
-                for (JCheckBox checkBox : checkBoxArray) {
+                for (JCheckBox checkBox : checkboxes) {
                     if (checkBox.isSelected()) {
                         String pluginName = checkBox.getText();
                         JButton pluginButton = new JButton(pluginName);
@@ -197,6 +217,7 @@ public class MainFrame extends JFrame {
     };
 
     public static void main(String[] args) {
-        new MainFrame();
+//        new MainFrame();
+        SwingUtilities.invokeLater(MainFrame::new);
     }
 }
