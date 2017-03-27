@@ -125,17 +125,21 @@ public class MainFrame extends JFrame {
     private JCheckBox[] preparePluginList() {
         File folder = new File(solver.getPluginsFolder());
         ArrayList<String> pluginNames = new ArrayList<>();
-        for (File plugin : folder.listFiles()) {
-            String s = plugin.getName();
-            if (s.substring(s.length()-4).equals(".jar")) {
-                pluginNames.add(s.substring(0,s.length()-4));
+        try {
+            for (File plugin : folder.listFiles()) {
+                String s = plugin.getName();
+                if (s.substring(s.length() - 4).equals(".jar")) {
+                    pluginNames.add(s.substring(0, s.length() - 4));
+                }
             }
+            JCheckBox[] checkBoxes = new JCheckBox[pluginNames.size()];
+            for (int i = 0; i < pluginNames.size(); i++) {
+                checkBoxes[i] = new JCheckBox(pluginNames.get(i));
+            }
+            return checkBoxes;
+        } catch (NullPointerException e) {
+            return null;
         }
-        JCheckBox[] checkBoxes = new JCheckBox[pluginNames.size()];
-        for (int i = 0; i < pluginNames.size(); i++) {
-            checkBoxes[i] = new JCheckBox(pluginNames.get(i));
-        }
-        return checkBoxes;
     }
 
     private ActionListener defaultListener = new ActionListener() {
